@@ -1,24 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Route, Routes, useNavigate} from "react-router-dom";
+import Main from "pages/Main";
+import Words from "pages/Words";
+import RandomQuiz from "pages/RandomQuiz";
+import { Button } from 'antd';
 
 function App() {
+  const navigate = useNavigate();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Button onClick={() => navigate(-1)}>back</Button>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/words" element={<Words />} />
+        <Route path="/quiz" element={<RandomQuiz />} />
+      </Routes>
     </div>
   );
 }
