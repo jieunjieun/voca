@@ -90,6 +90,21 @@ const wordListFetcher = () => {
   return JSON.parse(file);
 }
 
+
+// const wordListFetcher = () => {
+//   const fileList = fs.readdirSync('voca-list', { encoding: 'utf-8'});
+//   const chapters = fileList.map((file) => {
+//     return JSON.parse(fs.readFileSync(`voca-list/${file}`, { encoding: 'utf-8'}))
+//   })
+//
+//   const words: any = [];
+//   chapters.map((chapter) => {
+//     return words.push(...chapter)
+//   })
+//
+//   return words;
+// }
+
 const ButtonWrapper = styled.div`
   display: flex;
   height: 10%;
@@ -105,11 +120,14 @@ const Words = () => {
   const [currentChapter, setCurrentChapter] = useState<number>();
 
   const [isEditMode, setIsEditMode] = useState<boolean>();
-  const fileName = 'voca-list.json';
-
+  const fileName = `voca-list/voca-list-${currentChapter}.json`;
+  const directoryName = 'voca-list';
   const { data, mutate } = useSWR<VocaFile>('word-list-fetcher', wordListFetcher);
 
   const onApplyButtonClickHandler = () => {
+    const isDirectoryExist = fs.existsSync(directoryName);
+    if (!isDirectoryExist) fs.mkdirSync(directoryName, { recursive: true })
+
     const isFileExist = fs.existsSync(fileName)
     if (isFileExist) {
       let fileData = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
